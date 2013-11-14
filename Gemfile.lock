@@ -1,0 +1,14 @@
+PATH
+  remote: .
+  specs:
+    Nesstar REST API (0.0.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  Nesstar REST API!
