@@ -30,5 +30,4 @@ class Variable < NesstarObject
       Category.new category
     end
   end
-
 end

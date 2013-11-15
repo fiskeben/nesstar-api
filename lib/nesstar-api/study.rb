@@ -5,7 +5,6 @@ require 'nesstar-api/variable-container.rb'
 
 class Study < NesstarObject
   attr_reader :id, :name, :abstract
-  @@child_type = 'variable-groups'
 
   include VariableContainer
 
@@ -31,6 +30,10 @@ class Study < NesstarObject
   private
 
   def get_variable_group_type
-    @@child_type
+    'variable-groups'
+  end
+
+  def get_rest_type
+    'study'
   end
 end

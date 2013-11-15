@@ -4,18 +4,20 @@ require 'nesstar-api/variable-container.rb'
 class VariableGroup < NesstarObject
   include VariableContainer
 
-  attr_reader :id, :label
+  attr_reader :id, :name
 
   def initialize(data)
     @id = data['id']
-    @label = data['name']
+    @name = data['name']
   end
-
-  @@child_type = 'child-groups'
 
   private
 
   def get_variable_group_type
-    @@child_type
+    'child-groups'
+  end
+
+  def get_rest_type
+    'variable-group'
   end
 end
