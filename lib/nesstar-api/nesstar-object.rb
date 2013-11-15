@@ -18,7 +18,9 @@ class NesstarObject
   end
 
   def dig(hash, *path)
-    if (path.length == 1)
+    if hash.nil?
+      nil
+    elsif path.length == 1
       hash[path.pop.to_s]
     elsif hash.respond_to?(:keys)
       key = path.shift.to_s

@@ -10,4 +10,15 @@ class Server < NesstarObject
     end
   end
 
+  def get_study(id)
+    json = get_values "study/#{id}"
+    if json
+      study_id = dig(json, :ID)
+      name = dig(json, :stdyDscr, :citation, :titlStmt, :titl)
+      abstract = dig(json, :stdyDscr, :stdyInfo, :abstract)
+
+      Study.new({'id' => study_id, 'name' => name, 'abstract' => abstract})
+    end
+  end
+
 end
