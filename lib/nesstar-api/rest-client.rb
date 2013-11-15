@@ -14,19 +14,44 @@ class RestClient
   end
 
   def get_values(path)
-    payload = {}
-    begin
-      url = @@url + path
-      uri = URI.parse url
-      response = Net::HTTP.get_response uri
-      json = JSON.parse response.body
-      payload = json['payload']
-      if payload.nil?
-        payload = {}
-      end
-    rescue => e
-      print "Exception: #{e}"
+    uri = get_uri(path)
+    response = Net::HTTP.get_response uri
+    if response.is_a? Net::HTTPServerError
+      raise ServerError, parse_server_error(response.body)
     end
-    payload
+    json = JSON.parse response.body
+
+    json['payload']
+  end
+
+  def get_binary(path)
+    uri = get_uri(path)
+    Net::HTTP.start(uri.host, uri.port) do | http |
+      response = http.get(uri.request_uri)
+      if response.is_a? Net::HTTPServerError
+        raise ServerError, parse_server_error(response.body)
+      end
+      yield(response.body)
+    end
+  end
+
+  private
+
+  def get_uri(path)
+    url = @@url + path
+    URI.parse url
+  end
+
+  def parse_server_error(error)
+    begin
+      json = JSON.parse(error)
+      error = json['error']
+      "#{error['type']}: #{error['message']}"
+    rescue JSON::ParserError
+      "Fatal: Unknown server error occurred"
+    end
+  end
+
+  class ServerError < StandardError
   end
 end

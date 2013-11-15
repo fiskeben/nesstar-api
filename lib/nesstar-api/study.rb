@@ -1,3 +1,4 @@
+require 'tempfile'
 require 'nesstar-api/nesstar-object'
 require 'nesstar-api/variable'
 require 'nesstar-api/variable-group'
@@ -8,6 +9,14 @@ class Study < NesstarObject
   attr_reader :id, :name, :abstract
 
   include VariableContainer
+
+  NSDSTAT = "NSDSTAT"
+  SAS = "SAS"
+  SPSS = "SPSS"
+  SPSSPORT = "SPSSPORT"
+  STATA = "STATA"
+  STATA6 = "STATA6"
+  STATA7 = "STATA7"
 
   def initialize(data)
     @id = data['id']
@@ -34,7 +43,25 @@ class Study < NesstarObject
   def regress
   end
 
-  def download
+  def download(format, variables = [], case_subset = nil)
+    path = "study/#{@id}/download"
+
+    query_string = ["format=" + format]
+    query_string += collect_list(variables, "var", :id)
+    query_string.push("caseSubset=" + case_subset) unless case_subset.nil?
+
+    path += "?" + query_string.join('&')
+
+    get_binary(path) do | data |
+      if block_given?
+        yield(data)
+      else
+        file = Tempfile.new("#{@name}.#{format}")
+        file.write(data)
+        file.close
+        return file
+      end
+    end
   end
 
   private

@@ -17,6 +17,10 @@ class NesstarObject
     RestClient.instance.get_values path
   end
 
+  def get_binary(path, &block)
+    RestClient.instance.get_binary(path, &block)
+  end
+
   def dig(hash, *path)
     if hash.nil?
       nil
