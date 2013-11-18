@@ -1,5 +1,5 @@
 Gem::Specification.new do | s |
-  s.name = "Nesstar REST API Client"
+  s.name = "nesstar_rest_api_client"
   s.version = "0.0.1"
   s.summary = "Client for Nesstar REST API"
   s.authors = ["Ricco Førgaard"]
