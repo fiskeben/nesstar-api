@@ -1,3 +1,5 @@
+##
+# Represents a tabulation run on a +Study+.
 class Tabulation
   attr_reader :data, :variables, :measure, :measure_types, :case_subset
 

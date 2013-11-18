@@ -5,6 +5,7 @@ require 'nesstar-api/variable-group'
 require 'nesstar-api/variable-container'
 require 'nesstar-api/tabulation'
 
+## Represents a study
 class Study < NesstarObject
   attr_reader :id, :name, :abstract
 
@@ -25,6 +26,15 @@ class Study < NesstarObject
     @last_update = data['updatedTimeStamp']
   end
 
+  ##
+  # Returns a cross tabulation on this study
+  #
+  # The options parameter holds the following data:
+  #
+  # * +breakVars+ - A list of variable objects
+  # * +msrVar+ - The measure variable, if any
+  # * +msrType+ - A list of measure types to use. Valid types are MEAN, MEDIAN, STDDEV, MIN, MAX, SUM, COUNT, CI95MIN, CI95MAX, CI99MIN, CI99MAX, Q1, Q3, WHISKER_LO, WHISKER_HI, SUM_SQUARES, SE_MEAN
+  # * +casesubset+ - A subset expression to limit the categories to include. Documentation on expressions is found here: http://nesstar-dev.nsd.uib.no/javadoc/com.nesstar/nesstar-api/0.6.5/com/nesstar/api/subset/CaseSubset.html#compile
   def tabulate(options)
     path = "study/#{@id}/tabulate/"
     query_string = prepare_query_string_for_tabulation options
@@ -43,6 +53,16 @@ class Study < NesstarObject
   def regress
   end
 
+  ##
+  # Downloads the study (or parts of it) in different file formats.
+  #
+  # The file will be a zip file containing one or more files depending on the requested format.
+  #
+  # The +format+ parameter should be one of the constants in this class.
+  #
+  # To only download some variables, supply a list of the variables you wish.
+  #
+  # The download can be further refined using a case subset. See http://nesstar-dev.nsd.uib.no/javadoc/com.nesstar/nesstar-api/0.6.5/com/nesstar/api/subset/CaseSubset.html#compile for more information.
   def download(format, variables = [], case_subset = nil)
     path = "study/#{@id}/download"
 

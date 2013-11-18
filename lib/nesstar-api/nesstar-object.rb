@@ -1,5 +1,7 @@
 require 'nesstar-api/rest-client.rb'
 
+##
+# A parent class for all Nesstar objects.
 class NesstarObject
 
   private

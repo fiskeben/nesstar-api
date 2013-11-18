@@ -1,6 +1,8 @@
 require 'nesstar-api/nesstar-object.rb'
 require 'nesstar-api/variable-container.rb'
 
+##
+# Represents a group of variables in a +Study+.
 class VariableGroup < NesstarObject
   include VariableContainer
 

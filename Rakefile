@@ -1,7 +1,6 @@
 require "bundler/gem_tasks"
-require "rdoc"
+require "rdoc/task"
 
-task :docs do
-  doc = RDoc::RDoc.new
-  doc.document
+RDoc::Task.new(:rdoc => "docs", :clobber_rdoc => "docs:clean", :rerdoc => "docs:rebuild") do | rdoc |
+  rdoc.rdoc_dir = "doc"
 end
